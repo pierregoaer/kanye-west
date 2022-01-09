@@ -1,16 +1,46 @@
 const holes = document.querySelectorAll('.hole');
 const scoreBoard = document.querySelector('.score');
-const moles = document.querySelectorAll('.mole');
+const kanyes = document.querySelectorAll('.kanye');
 const startButton = document.querySelector('.start-button');
+const difficulties = document.querySelectorAll('.difficulty');
+const difficultySelector = document.querySelector('.difficulty-selector');
 let lastHole, score;
+let difficulty = [];
 let timeUp = true;
 
-// Creation of a function that gives a random duration number between a min and a max. This number will be used to determine how long the mole comes out for
+const easy = [800, 2000];
+const medium = [500, 1500];
+const hard = [200, 1000];
+
+// Select difficulty level
+function setDifficulty() {
+	const element = this === window ? document.querySelector('.easy') : this;
+	// const element = this;
+	const elementCoords = {
+		width: element.getBoundingClientRect().width,
+		height: element.getBoundingClientRect().height,
+		left: element.getBoundingClientRect().left + window.scrollX,
+		top: element.getBoundingClientRect().top + window.scrollY,
+	};
+
+	difficultySelector.style.width = `${elementCoords.width}px`;
+	difficultySelector.style.height = `${elementCoords.height}px`;
+	difficultySelector.style.transform = `translate(${elementCoords.left}px, ${elementCoords.top}px)`;
+
+	if (element.dataset.difficulty === 'easy') difficulty = easy;
+	if (element.dataset.difficulty === 'medium') difficulty = medium;
+	if (element.dataset.difficulty === 'hard') difficulty = hard;
+
+	// Does not work because dataset.difficulty is a string
+	// difficulty = element.dataset.difficulty;
+}
+
+// Creation of a function that gives a random duration number between a min and a max. This number will be used to determine how long the kanye comes out for
 function randomTime(min, max) {
 	return Math.round(Math.random() * (max - min) + min);
 }
 
-// Function that randomly selects a hole for the mole to come out of
+// Function that randomly selects a hole for the kanye to come out of
 function randomHole(holes) {
 	const idx = Math.floor(Math.random() * holes.length);
 	const hole = holes[idx];
@@ -23,9 +53,9 @@ function randomHole(holes) {
 	return hole;
 }
 
-// Function to make the mole peep
+// Function to make the kanye peep
 function peep() {
-	const time = randomTime(200, 1000);
+	const time = randomTime(difficulty[0], difficulty[1]);
 	const hole = randomHole(holes);
 	hole.classList.add('up');
 	setTimeout(() => {
@@ -43,14 +73,19 @@ function startGame() {
 	setTimeout(() => (timeUp = true), 10000);
 }
 
-// Detect when we whack a mole
+// Detect when we whack a kanye
 function bonk(e) {
 	if (!e.isTrusted) return; // To prevent fake clicks from happening ???
 	score++;
-	this.classList.remove('up');
+	this.closest('.hole').classList.remove('up');
 	scoreBoard.textContent = score;
 }
 
-moles.forEach(mole => mole.addEventListener('click', bonk));
+kanyes.forEach(kanye => kanye.addEventListener('click', bonk));
 
 startButton.addEventListener('click', startGame);
+difficulties.forEach(difficulty => difficulty.addEventListener('click', setDifficulty));
+
+// Initialize the difficulty selector, not sure why but calling the function without the setTimeout makes the selector takes the wrong shape
+setTimeout(setDifficulty, 0);
+// setDifficulty();
