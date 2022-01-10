@@ -72,11 +72,15 @@ function startGame() {
 	scoreBoard.textContent = '0';
 	score = 0;
 	timeUp = false;
+	kanyesQuote.textContent = '';
 	peep();
-	setTimeout(() => {
-		timeUp = true;
-		getKanyesQuote();
-	}, 2000);
+	setTimeout(endGame, 4000);
+}
+
+function endGame() {
+	timeUp = true;
+	holes.forEach(hole => hole.classList.remove('up'));
+	getKanyesQuote();
 }
 
 // Detect when we whack a kanye
