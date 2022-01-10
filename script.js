@@ -4,6 +4,8 @@ const kanyes = document.querySelectorAll('.kanye');
 const startButton = document.querySelector('.start-button');
 const difficulties = document.querySelectorAll('.difficulty');
 const difficultySelector = document.querySelector('.difficulty-selector');
+const game = document.querySelector('.game');
+const kanyesQuote = document.querySelector('.kanyes-quote');
 let lastHole, score;
 let difficulty = [];
 let timeUp = true;
@@ -66,11 +68,15 @@ function peep() {
 
 // function timeUp
 function startGame() {
+	if (!timeUp) return;
 	scoreBoard.textContent = '0';
 	score = 0;
 	timeUp = false;
 	peep();
-	setTimeout(() => (timeUp = true), 10000);
+	setTimeout(() => {
+		timeUp = true;
+		getKanyesQuote();
+	}, 2000);
 }
 
 // Detect when we whack a kanye
@@ -89,3 +95,15 @@ difficulties.forEach(difficulty => difficulty.addEventListener('click', setDiffi
 // Initialize the difficulty selector, not sure why but calling the function without the setTimeout makes the selector takes the wrong shape
 setTimeout(setDifficulty, 0);
 // setDifficulty();
+
+async function getKanyesQuote() {
+	try {
+		const res = await fetch('https://api.kanye.rest');
+		const data = await res.json();
+		const quote = `"${data.quote}" - Kanye West`;
+		console.log(quote);
+		kanyesQuote.textContent = quote;
+	} catch {
+		console.log('My quote= Kanye loves Kanye');
+	}
+}

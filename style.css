@@ -56,7 +56,7 @@ h1 {
 }
 
 .start-button {
-	margin: 25px auto 50px auto;
+	margin: 25px auto 20px auto;
 	display: block;
 	padding: 10px 20px;
 	border: none;
@@ -82,7 +82,11 @@ h1 {
 	height: 400px;
 	display: flex;
 	flex-wrap: wrap;
-	margin: 0 auto;
+	margin: 0 auto 70px auto;
+}
+
+.game:hover {
+	cursor: url(img/Yeezy.png), auto;
 }
 
 .hole {
@@ -127,4 +131,15 @@ h1 {
   height: 100px;
   background-color: red; */
 	transition: transform 0.3s;
+}
+
+.kanyes-quote {
+	max-width: 600px;
+	margin: 0 auto;
+	text-align: center;
+	font-size: 5rem;
+}
+
+.hidden {
+	display: none;
 }
