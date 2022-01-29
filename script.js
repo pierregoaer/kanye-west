@@ -74,7 +74,7 @@ function startGame() {
 	timeUp = false;
 	kanyesQuote.textContent = '';
 	peep();
-	setTimeout(endGame, 4000);
+	setTimeout(endGame, 10000);
 }
 
 function endGame() {
